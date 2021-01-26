@@ -13,6 +13,7 @@ android {
     versionCode 1
     versionName "1.0"
 
+    multiDexEnabled = true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
@@ -47,4 +48,23 @@ dependencies {
   testImplementation 'junit:junit:4.+'
   androidTestImplementation 'androidx.test.ext:junit:1.1.2'
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+  // Koin AndroidX
+  implementation "org.koin:koin-androidx-scope:2.2.1"
+  implementation "org.koin:koin-androidx-viewmodel:2.2.1"
+  implementation "org.koin:koin-androidx-fragment:2.2.1"
+
+  // Retrofit
+  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+  implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+
+  // Moshi
+  implementation "com.squareup.moshi:moshi:1.9.3"
+  implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
+
+  // Multidex
+  implementation "androidx.multidex:multidex:2.0.1"
+
+  // Paging
+  implementation "androidx.paging:paging-runtime:3.0.0-alpha12"
 }
