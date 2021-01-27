@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 class RepositoryImpl(
     private val service: GithubService,
     private val db: AppDatabase
-): GithubRepository {
+) : GithubRepository {
 
     override suspend fun getUsers(since: Int): Flow<List<User>> {
         return flow {
@@ -28,6 +28,10 @@ class RepositoryImpl(
         config = PagingConfig(30),
         remoteMediator = GithubRemoteMediator(db, service, search)
     ) {
-       db.userDao().getAllWithPage()
+        if (search.isBlank()) {
+            db.userDao().getAllWithPage()
+        } else {
+            db.userDao().getSearchWithPage(search)
+        }
     }.flow
 }

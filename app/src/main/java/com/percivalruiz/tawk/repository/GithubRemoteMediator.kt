@@ -30,6 +30,7 @@ class GithubRemoteMediator(
         state: PagingState<Int, User>
     ): MediatorResult {
         try {
+
             // Get the closest item from PagingState that we want to load data around.
             val since = when (loadType) {
                 REFRESH -> null
@@ -44,6 +45,7 @@ class GithubRemoteMediator(
                     remoteKey.nextPageKey
                 }
             }
+
 
             val data = service.getUserList(since)
 
@@ -62,7 +64,7 @@ class GithubRemoteMediator(
                 userDao.insertAll(*data.toTypedArray())
             }
 
-            return MediatorResult.Success(endOfPaginationReached = data.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = data.isEmpty() || search.isNotBlank())
         } catch (e: IOException) {
             return MediatorResult.Error(e)
         } catch (e: HttpException) {

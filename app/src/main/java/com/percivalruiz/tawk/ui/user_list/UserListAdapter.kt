@@ -3,9 +3,12 @@ package com.percivalruiz.tawk.ui.user_list
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.RequestManager
 import com.percivalruiz.tawk.data.User
 
-class UserListAdapter : PagingDataAdapter<User, UserViewHolder>(USER_COMP) {
+class UserListAdapter(
+    private val glide: RequestManager
+) : PagingDataAdapter<User, UserViewHolder>(USER_COMP) {
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -20,7 +23,7 @@ class UserListAdapter : PagingDataAdapter<User, UserViewHolder>(USER_COMP) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        return UserViewHolder.create(parent)
+        return UserViewHolder.create(parent, glide)
     }
 
     companion object {

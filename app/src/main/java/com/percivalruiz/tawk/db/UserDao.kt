@@ -12,6 +12,10 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAllWithPage(): PagingSource<Int, User>
 
+
+    @Query("SELECT * FROM user where login LIKE '%' || :search || '%'")
+    fun getSearchWithPage(search: String): PagingSource<Int, User>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg user: User)
 

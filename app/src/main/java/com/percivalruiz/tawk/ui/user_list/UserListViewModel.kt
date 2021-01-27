@@ -1,5 +1,6 @@
 package com.percivalruiz.tawk.ui.user_list
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -23,12 +24,9 @@ class UserListViewModel(
 
     init {
         if (!handle.contains(KEY_SEARCH)) {
-            handle.set(KEY_SEARCH, "test")
+            handle.set(KEY_SEARCH, "")
         }
     }
-
-    private val _userListFlow = MutableSharedFlow<List<User>>(replay = 0)
-    val userListFlow: SharedFlow<List<User>> = _userListFlow
 
     private val clearListCh = Channel<Unit>(Channel.CONFLATED)
 
@@ -37,25 +35,15 @@ class UserListViewModel(
         clearListCh.receiveAsFlow().map { PagingData.empty<User>() },
         handle.getLiveData<String>(KEY_SEARCH)
             .asFlow()
-            .flatMapLatest { repository.getUsers(0, "") }
+            .flatMapLatest { repository.getUsers(0, it) }
             // cachedIn() shares the paging state across multiple consumers of posts,
             // e.g. different generations of UI across rotation config change
             .cachedIn(viewModelScope)
     ).flattenMerge(2)
 
-    fun getUsers(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getUsers().collectLatest { users ->
-                _userListFlow.emit(users)
-            }
-        }
-    }
-
-    fun getItYow(search: String) {
-
+    fun search(search: String) {
         clearListCh.offer(Unit)
-
-        handle.set(KEY_SEARCH, "")
+        handle.set(KEY_SEARCH, search)
     }
 
     companion object {
