@@ -1,6 +1,5 @@
 package com.percivalruiz.tawk.ui.user_list
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -8,17 +7,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.percivalruiz.tawk.data.User
-import com.percivalruiz.tawk.repository.GithubRepository
-import kotlinx.coroutines.Dispatchers
+import com.percivalruiz.tawk.repository.Repository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class UserListViewModel(
     private val handle: SavedStateHandle,
-    private val repository: GithubRepository
+    private val repository: Repository
 ) : ViewModel() {
 
 

@@ -18,7 +18,8 @@ import com.percivalruiz.tawk.data.User
 
 class UserViewHolder(
     view: View, private
-    val glide: RequestManager
+    val glide: RequestManager,
+    val onClick: (id: Long, login: String) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val login: TextView = view.findViewById(R.id.login)
@@ -29,7 +30,7 @@ class UserViewHolder(
 
     init {
         view.setOnClickListener {
-            Toast.makeText(view.context, user?.login, Toast.LENGTH_SHORT).show()
+            onClick(user?.id ?: 0, user?.login.orEmpty())
         }
     }
 
@@ -45,7 +46,7 @@ class UserViewHolder(
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(avatar)
 
-            if ((bindingAdapterPosition+1) % 4 == 0) {
+            if ((bindingAdapterPosition + 1) % 4 == 0) {
                 val matrix = floatArrayOf(
                     -1f, 0f, 0f, 0f, 255f,
                     0f, -1f, 0f, 0f, 255f,
@@ -62,10 +63,14 @@ class UserViewHolder(
     }
 
     companion object {
-        fun create(parent: ViewGroup, glide: RequestManager): UserViewHolder {
+        fun create(
+            parent: ViewGroup,
+            glide: RequestManager,
+            onClick: (id: Long, login: String) -> Unit
+        ): UserViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.user_item, parent, false)
-            return UserViewHolder(view, glide)
+            return UserViewHolder(view, glide, onClick)
         }
     }
 }
