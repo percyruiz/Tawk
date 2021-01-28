@@ -74,5 +74,7 @@ data class User (
 
     @ColumnInfo(name = "site_admin")
     @Json(name = "site_admin")
-    val siteAdmin: Boolean
+    val siteAdmin: Boolean,
+
+    var note: String? = null
 )

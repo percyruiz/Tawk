@@ -10,6 +10,7 @@ import com.percivalruiz.tawk.data.GithubService
 import com.percivalruiz.tawk.data.User
 import com.percivalruiz.tawk.data.UserRemoteKey
 import com.percivalruiz.tawk.db.AppDatabase
+import com.percivalruiz.tawk.db.NoteDao
 import com.percivalruiz.tawk.db.UserDao
 import com.percivalruiz.tawk.db.UserRemoteKeyDao
 import retrofit2.HttpException
@@ -24,6 +25,7 @@ class GithubRemoteMediator(
 
     private val userDao: UserDao = db.userDao()
     private val remoteKeyDao: UserRemoteKeyDao = db.keyDao()
+    private val noteDao: NoteDao = db.noteDao()
 
     override suspend fun load(
         loadType: LoadType,
@@ -61,6 +63,15 @@ class GithubRemoteMediator(
                     )
                 )
 
+
+                val notes = noteDao.getAllNotes()
+                data.forEach { user ->
+                    try {
+                        user.note = notes.first { it.id == user.id }.content
+                    } catch (e: NoSuchElementException) {
+                        user.note = null
+                    }
+                }
                 userDao.insertAll(*data.toTypedArray())
             }
 

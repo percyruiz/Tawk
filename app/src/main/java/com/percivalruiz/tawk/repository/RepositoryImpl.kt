@@ -38,6 +38,12 @@ class RepositoryImpl(
         }
     }.flow
 
+    override suspend fun getUserFromDb(id: Long): User = db.userDao().getUser(id)
+
+    override suspend fun saveUserToDb(user: User) {
+        db.userDao().insert(user)
+    }
+
     override suspend fun getProfile(login: String): Flow<UserProfile> {
         return flow {
             val data = service.getUserProfile(login)

@@ -12,8 +12,7 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAllWithPage(): PagingSource<Int, User>
 
-
-    @Query("SELECT * FROM user where login LIKE '%' || :search || '%'")
+    @Query("SELECT * FROM user where login LIKE '%' || :search || '%' OR note LIKE '%' || :search || '%'")
     fun getSearchWithPage(search: String): PagingSource<Int, User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -21,4 +20,10 @@ interface UserDao {
 
     @Query("DELETE FROM user")
     fun nukeUser()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(user: User)
+
+    @Query("SELECT * FROM user where id = :id")
+    fun getUser(id: Long): User
 }

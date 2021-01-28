@@ -17,15 +17,11 @@ class ProfileViewModel(
     private val _profile = MutableLiveData<Pair<UserProfile, Note?>>()
     val profile: LiveData<Pair<UserProfile, Note?>> = _profile
 
-    fun getProfile(id:Long, login: String) {
+    fun getProfile(id: Long, login: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-//                repository.getProfile(login)
-//                    .combine(repository.getNote(id)).collectLatest { profile, note ->
-//                    _profile.value = profile
-//                }
-                repository.getProfile(login).zip(repository.getNote(id)) {
-                    profile, note -> Pair(profile, note)
+                repository.getProfile(login).zip(repository.getNote(id)) { profile, note ->
+                    Pair(profile, note)
                 }.collect {
                     _profile.postValue(it)
                 }
@@ -41,6 +37,9 @@ class ProfileViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.saveNote(id, content)
+                val user = repository.getUserFromDb(id)
+                user.note = content
+                repository.saveUserToDb(user)
             } catch (e: Throwable) {
                 Log.d("error", e.message)
             }

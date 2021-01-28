@@ -2,6 +2,7 @@ package com.percivalruiz.tawk.ui.user_list
 
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.percivalruiz.tawk.R
+import com.percivalruiz.tawk.data.Note
 import com.percivalruiz.tawk.data.User
 
 class UserViewHolder(
@@ -25,6 +27,7 @@ class UserViewHolder(
     private val login: TextView = view.findViewById(R.id.login)
     private val typeInfo: TextView = view.findViewById(R.id.type_info)
     private val avatar: ImageView = view.findViewById(R.id.avatar)
+    private val note: ImageView = view.findViewById(R.id.note)
     private var user: User? = null
     //private val isInverted = false
 
@@ -59,7 +62,18 @@ class UserViewHolder(
                 avatar.clearColorFilter()
                 avatar.invalidate()
             }
+
+            if (user.note != null) {
+                this@UserViewHolder.note.visibility = View.VISIBLE
+            } else {
+                this@UserViewHolder.note.visibility = View.GONE
+            }
         }
+    }
+
+    fun updateNote(item: User?) {
+        user = item
+        user?.note = item?.note
     }
 
     companion object {
