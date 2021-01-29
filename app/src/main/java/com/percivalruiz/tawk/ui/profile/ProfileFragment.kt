@@ -1,22 +1,18 @@
 package com.percivalruiz.tawk.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.percivalruiz.tawk.R
 import com.percivalruiz.tawk.databinding.FragmentProfileBinding
-import com.percivalruiz.tawk.ui.user_list.UserListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -63,6 +59,10 @@ class ProfileFragment : Fragment() {
             binding.shimmerViewContainer.stopShimmerAnimation()
             binding.shimmerViewContainer.visibility = View.GONE
             binding.content.visibility = View.VISIBLE
+        }
+
+        viewModel.noteSaveSuccess.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "note saved", Toast.LENGTH_SHORT).show()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {

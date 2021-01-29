@@ -47,7 +47,6 @@ class RepositoryImpl(
     override suspend fun getProfile(login: String): Flow<UserProfile> {
         return flow {
             val data = service.getUserProfile(login)
-            Log.d("test", data.name)
             emit(data)
         }
     }

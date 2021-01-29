@@ -17,6 +17,10 @@ class ProfileViewModel(
     private val _profile = MutableLiveData<Pair<UserProfile, Note?>>()
     val profile: LiveData<Pair<UserProfile, Note?>> = _profile
 
+
+    private val _noteSaveSuccess = MutableLiveData<Unit>()
+    val noteSaveSuccess: LiveData<Unit> = _noteSaveSuccess
+
     fun getProfile(id: Long, login: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -40,6 +44,7 @@ class ProfileViewModel(
                 val user = repository.getUserFromDb(id)
                 user.note = content
                 repository.saveUserToDb(user)
+                _noteSaveSuccess.postValue(Unit)
             } catch (e: Throwable) {
                 Log.d("error", e.message)
             }

@@ -1,9 +1,6 @@
 package com.percivalruiz.tawk.ui.user_list
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.percivalruiz.tawk.data.User
@@ -26,6 +23,9 @@ class UserListViewModel(
     }
 
     private val clearListCh = Channel<Unit>(Channel.CONFLATED)
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val users = flowOf(
