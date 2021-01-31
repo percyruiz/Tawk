@@ -41,6 +41,7 @@ class UserListAdapter(
             override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
                 oldItem.id == newItem.id
 
+            // Checks if a note is added to the User item
             override fun getChangePayload(oldItem: User, newItem: User): Any? {
                 return if (sameExceptNote(oldItem, newItem)) {
                     PAYLOAD_NOTE

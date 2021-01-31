@@ -49,6 +49,7 @@ class UserViewHolder(
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(avatar)
 
+            // Invert color of avatars
             if ((bindingAdapterPosition + 1) % 4 == 0) {
                 val matrix = floatArrayOf(
                     -1f, 0f, 0f, 0f, 255f,
@@ -63,7 +64,7 @@ class UserViewHolder(
                 avatar.invalidate()
             }
 
-            if (user.note != null) {
+            if (note != null) {
                 this@UserViewHolder.note.visibility = View.VISIBLE
             } else {
                 this@UserViewHolder.note.visibility = View.GONE

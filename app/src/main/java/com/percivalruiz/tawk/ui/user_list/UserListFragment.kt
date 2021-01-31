@@ -131,7 +131,7 @@ class UserListFragment : Fragment(), ConnectivityReceiver.ConnectivityReceiverLi
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        if (isConnected) {
+        if (isConnected && binding.noWifi.visibility == View.VISIBLE) {
             adapter.refresh()
         }
     }

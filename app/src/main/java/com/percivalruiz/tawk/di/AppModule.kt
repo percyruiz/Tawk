@@ -20,6 +20,9 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * Handles dependency injection using Koin
+ */
 val appModule = module {
 
     single {

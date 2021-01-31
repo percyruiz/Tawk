@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repository {
 
-    suspend fun getUsers(since: Int = 0): Flow<List<User>>
-
     suspend fun getUsers(since: Int = 0, search: String = ""): Flow<PagingData<User>>
 
     suspend fun getUserFromDb(id: Long): User

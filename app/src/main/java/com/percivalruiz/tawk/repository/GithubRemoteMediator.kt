@@ -33,18 +33,17 @@ class GithubRemoteMediator(
     ): MediatorResult {
         try {
 
-            // Get the closest item from PagingState that we want to load data around.
             val since = when (loadType) {
                 REFRESH -> null
                 PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 APPEND -> {
-                    // Get the saved since value
+                    // Get the saved since value from db
                     val remoteKey = db.withTransaction {
                         remoteKeyDao.peek()
                     }
 
                     // Return the saved since value
-                    remoteKey.nextPageKey
+                    remoteKey?.nextPageKey ?: 0
                 }
             }
 
@@ -52,10 +51,12 @@ class GithubRemoteMediator(
             val data = service.getUserList(since)
 
             db.withTransaction {
+                // Remove [User] data saved in db cache when refresh is being called
                 if (loadType == REFRESH) {
                     userDao.nukeUser()
                 }
 
+                // Save the next since value to db, will use this once to get the next page using Github service
                 remoteKeyDao.insert(
                     UserRemoteKey(
                         uid = 0,
@@ -63,7 +64,7 @@ class GithubRemoteMediator(
                     )
                 )
 
-
+                // Checks if [Note] with id equals [User] id exists then saves the [Note] content to [User] note field
                 val notes = noteDao.getAllNotes()
                 data.forEach { user ->
                     try {
@@ -72,9 +73,12 @@ class GithubRemoteMediator(
                         user.note = null
                     }
                 }
+
+                // Cache to db
                 userDao.insertAll(*data.toTypedArray())
             }
 
+            // Set end of page if there is no more data being fetched and if search criteria is blank
             return MediatorResult.Success(endOfPaginationReached = data.isEmpty() || search.isNotBlank())
         } catch (e: IOException) {
             return MediatorResult.Error(e)

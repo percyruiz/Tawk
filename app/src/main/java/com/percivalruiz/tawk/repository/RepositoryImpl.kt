@@ -1,6 +1,5 @@
 package com.percivalruiz.tawk.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -17,15 +16,12 @@ class RepositoryImpl(
     private val db: AppDatabase
 ) : Repository {
 
-    override suspend fun getUsers(since: Int): Flow<List<User>> {
-        return flow {
-            val data = service.getUserList(since)
-            emit(data)
-
-            db.userDao().insertAll(*data.toTypedArray())
-        }
-    }
-
+    /**
+     * RemoteMediator class used for Paging
+     *
+     * Returns [Flow<PagingData>] object the [PagingSource] produced by querying to db
+     * [GithubService] requests data then inserts them to db using [GithubRemoteMediator]
+     */
     @OptIn(ExperimentalPagingApi::class)
     override suspend fun getUsers(since: Int, search: String) = Pager(
         config = PagingConfig(30),

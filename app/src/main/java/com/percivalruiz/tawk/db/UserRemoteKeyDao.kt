@@ -11,10 +11,7 @@ interface UserRemoteKeyDao {
     fun insert(key: UserRemoteKey)
 
     @Query("SELECT * FROM remote_keys LIMIT 1")
-    fun peek(): UserRemoteKey
-
-    @Update
-    fun update(key: UserRemoteKey)
+    fun peek(): UserRemoteKey?
 
     @Query("DELETE FROM remote_keys")
     fun nukeKey()
