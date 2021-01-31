@@ -7,7 +7,7 @@
 
   <fragment
       android:id="@+id/userListFragment"
-      android:name="com.percivalruiz.tawk.UserListFragment"
+      android:name="com.percivalruiz.tawk.ui.user_list.UserListFragment"
       tools:layout="@layout/fragment_user_list">
 
     <action
@@ -18,8 +18,16 @@
 
   <fragment
       android:id="@+id/profileFragment"
-      android:name="com.percivalruiz.tawk.ProfileFragment"
+      android:name="com.percivalruiz.tawk.ui.profile.ProfileFragment"
       android:label="@string/profile_fragment_label"
       tools:layout="@layout/fragment_profile">
+
+    <argument
+        android:name="id"
+        app:argType="long"/>
+
+    <argument
+        android:name="login"
+        app:argType="string"/>
   </fragment>
 </navigation>

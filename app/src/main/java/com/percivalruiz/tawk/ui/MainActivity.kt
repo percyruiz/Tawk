@@ -1,4 +1,4 @@
-package com.percivalruiz.tawk
+package com.percivalruiz.tawk.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import com.percivalruiz.tawk.R
 import com.percivalruiz.tawk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
